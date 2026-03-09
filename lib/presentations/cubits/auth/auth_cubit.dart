@@ -31,6 +31,17 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  Future<void> signup(String email, String password) async {
+    emit(state.copyWith(status: AuthStatus.loading));
+    try {
+      await _auth.signUpWithEmailPassword(email, password);
+    } catch (e) {
+      emit(
+        state.copyWith(errorMessage: e.toString(), status: AuthStatus.failure),
+      );
+    }
+  }
+
   Future<void> logout() async {
     emit(state.copyWith(status: AuthStatus.loading));
     try {

@@ -1,8 +1,11 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mini_chat/presentations/cubits/auth/auth_cubit.dart';
 import 'package:mini_chat/presentations/widgets/my_button.dart';
 import 'package:mini_chat/presentations/widgets/my_textfield.dart';
+import 'package:mini_chat/routing/app_router.dart';
 
 class LoginPage extends StatelessWidget {
   final emailController = TextEditingController();
@@ -90,6 +93,10 @@ class LoginPage extends StatelessWidget {
                   ),
                   TextSpan(
                     text: ' Register now',
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        context.push(AppRoutes.register);
+                      },
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,

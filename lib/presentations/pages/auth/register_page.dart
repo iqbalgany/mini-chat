@@ -1,6 +1,11 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:mini_chat/presentations/cubits/auth/auth_cubit.dart';
 import 'package:mini_chat/presentations/widgets/my_button.dart';
 import 'package:mini_chat/presentations/widgets/my_textfield.dart';
+import 'package:mini_chat/routing/app_router.dart';
 
 class RegisterPage extends StatelessWidget {
   final emailController = TextEditingController();
@@ -54,14 +59,44 @@ class RegisterPage extends StatelessWidget {
             // confirmation password textfield
             MyTextfield(
               hintText: 'Confirmation Password',
-              controller: passwordController,
+              controller: confirmationPasswordController,
               obscureText: true,
             ),
 
             SizedBox(height: 25),
 
             // register button
-            MyButton(text: 'Register', onTap: register),
+            BlocListener<AuthCubit, AuthState>(
+              listener: (context, authState) {
+                if (authState.status == AuthStatus.failure) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      backgroundColor: Theme.of(context).colorScheme.error,
+                      content: Text(authState.errorMessage ?? ''),
+                    ),
+                  );
+                }
+              },
+              child: MyButton(
+                text: 'Register',
+                onTap: () {
+                  if (passwordController.text ==
+                      confirmationPasswordController.text) {
+                    context.read<AuthCubit>().signup(
+                      emailController.text.trim(),
+                      passwordController.text.trim(),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: Theme.of(context).colorScheme.error,
+                        content: Text('Password don\'t match'),
+                      ),
+                    );
+                  }
+                },
+              ),
+            ),
 
             SizedBox(height: 25),
 
@@ -77,6 +112,14 @@ class RegisterPage extends StatelessWidget {
                   ),
                   TextSpan(
                     text: ' Login now',
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        if (context.canPop()) {
+                          context.pop();
+                        } else {
+                          context.go(AppRoutes.login);
+                        }
+                      },
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,

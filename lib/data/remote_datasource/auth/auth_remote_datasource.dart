@@ -19,6 +19,20 @@ class AuthRemoteDatasource {
     }
   }
 
+  Future<UserCredential> signUpWithEmailPassword(
+    String email,
+    String password,
+  ) async {
+    try {
+      return await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+    } on FirebaseAuthException catch (e) {
+      throw Exception(e.code);
+    }
+  }
+
   Future<void> signOut() async {
     await _auth.signOut();
   }
