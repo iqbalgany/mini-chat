@@ -1,21 +1,26 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' as fb;
+import 'package:mini_chat/data/models/user_model.dart';
 import 'package:mini_chat/data/remote_datasource/auth/auth_remote_datasource.dart';
 
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   final AuthRemoteDatasource _auth;
-  late StreamSubscription<User?> _authSubsription;
+
+  late StreamSubscription<fb.User?> _authSubsription;
+
   AuthCubit(this._auth) : super(const AuthState()) {
-    _authSubsription = _auth.authStateChange.listen((user) {
-      if (user != null) {
-        emit(state.copyWith(status: AuthStatus.authenticated, user: user));
+    _authSubsription = _auth.authStateChange.listen((fbUser) {
+      if (fbUser != null) {
+        final myUser = UserModel(uid: fbUser.uid, email: fbUser.email);
+        emit(state.copyWith(status: AuthStatus.authenticated, user: myUser));
       } else {
-        emit(state.copyWith(status: AuthStatus.unauthenticated));
+        emit(state.copyWith(status: AuthStatus.unauthenticated, user: null));
       }
     });
   }
@@ -33,9 +38,12 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<void> signup(String email, String password) async {
     emit(state.copyWith(status: AuthStatus.loading));
+    log('Loading');
     try {
+      log('Success');
       await _auth.signUpWithEmailPassword(email, password);
     } catch (e) {
+      log("DEBUG ERROR: $e");
       emit(
         state.copyWith(errorMessage: e.toString(), status: AuthStatus.failure),
       );

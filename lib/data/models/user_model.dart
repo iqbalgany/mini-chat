@@ -1,13 +1,13 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-class User {
+class UserModel {
   String uid;
   String? email;
   String? firstName;
   String? lastName;
   String? profileImage;
-  User({
+  UserModel({
     required this.uid,
     this.email,
     this.firstName,
@@ -15,14 +15,14 @@ class User {
     this.profileImage,
   });
 
-  User copyWith({
+  UserModel copyWith({
     String? uid,
     String? email,
     String? firstName,
     String? lastName,
     String? profileImage,
   }) {
-    return User(
+    return UserModel(
       uid: uid ?? this.uid,
       email: email ?? this.email,
       firstName: firstName ?? this.firstName,
@@ -41,8 +41,8 @@ class User {
     };
   }
 
-  factory User.fromMap(Map<String, dynamic> map) {
-    return User(
+  factory UserModel.fromMap(Map<String, dynamic> map) {
+    return UserModel(
       uid: map['uid'] as String,
       email: map['email'] != null ? map['email'] as String : null,
       firstName: map['firstName'] != null ? map['firstName'] as String : null,
@@ -55,16 +55,16 @@ class User {
 
   String toJson() => json.encode(toMap());
 
-  factory User.fromJson(String source) =>
-      User.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory UserModel.fromJson(String source) =>
+      UserModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
-    return 'User(uid: $uid, email: $email, firstName: $firstName, lastName: $lastName, profileImage: $profileImage)';
+    return 'UserModel(uid: $uid, email: $email, firstName: $firstName, lastName: $lastName, profileImage: $profileImage)';
   }
 
   @override
-  bool operator ==(covariant User other) {
+  bool operator ==(covariant UserModel other) {
     if (identical(this, other)) return true;
 
     return other.uid == uid &&

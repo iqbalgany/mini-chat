@@ -9,8 +9,12 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Drawer(),
       appBar: AppBar(
-        title: Text('Home'),
+        title: Text('Home', style: TextStyle(color: Colors.white)),
+        centerTitle: true,
+        automaticallyImplyLeading: true,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         actions: [
           BlocListener<AuthCubit, AuthState>(
             listener: (context, authState) {
@@ -35,6 +39,7 @@ class HomePage extends StatelessWidget {
               }
             },
             child: IconButton(
+              color: Colors.white,
               onPressed: () {
                 context.read<AuthCubit>().logout();
               },

@@ -72,7 +72,7 @@ class RegisterPage extends StatelessWidget {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       backgroundColor: Theme.of(context).colorScheme.error,
-                      content: Text(authState.errorMessage ?? ''),
+                      content: Text(authState.errorMessage ?? 'Error'),
                     ),
                   );
                 }
@@ -85,6 +85,14 @@ class RegisterPage extends StatelessWidget {
                     context.read<AuthCubit>().signup(
                       emailController.text.trim(),
                       passwordController.text.trim(),
+                    );
+                  } else if (emailController.text.isEmpty ||
+                      passwordController.text.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: Theme.of(context).colorScheme.error,
+                        content: Text('empty email or password'),
+                      ),
                     );
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(

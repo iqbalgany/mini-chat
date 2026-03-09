@@ -71,10 +71,20 @@ class LoginPage extends StatelessWidget {
               child: MyButton(
                 text: 'Login',
                 onTap: () {
-                  context.read<AuthCubit>().login(
-                    emailController.text.trim(),
-                    passwordController.text.trim(),
-                  );
+                  if (emailController.text.isNotEmpty &&
+                      passwordController.text.isNotEmpty) {
+                    context.read<AuthCubit>().login(
+                      emailController.text.trim(),
+                      passwordController.text.trim(),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: Theme.of(context).colorScheme.error,
+                        content: Text('empty email or password'),
+                      ),
+                    );
+                  }
                 },
               ),
             ),
