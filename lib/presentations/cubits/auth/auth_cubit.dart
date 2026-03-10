@@ -27,9 +27,12 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<void> login(String email, String password) async {
     emit(state.copyWith(status: AuthStatus.loading));
+    log('Loading');
     try {
       await _auth.signInWithEmailPassword(email, password);
+      log('Success');
     } catch (e) {
+      log("DEBUG ERROR: $e");
       emit(
         state.copyWith(errorMessage: e.toString(), status: AuthStatus.failure),
       );
@@ -40,8 +43,8 @@ class AuthCubit extends Cubit<AuthState> {
     emit(state.copyWith(status: AuthStatus.loading));
     log('Loading');
     try {
-      log('Success');
       await _auth.signUpWithEmailPassword(email, password);
+      log('Success');
     } catch (e) {
       log("DEBUG ERROR: $e");
       emit(

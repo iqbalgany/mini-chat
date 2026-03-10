@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mini_chat/presentations/cubits/auth/auth_cubit.dart';
 import 'package:mini_chat/presentations/pages/auth/login_page.dart';
+import 'package:mini_chat/presentations/widgets/my_drawer.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -9,11 +10,11 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(),
+      drawer: MyDrawer(),
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
         title: Text('Home', style: TextStyle(color: Colors.white)),
         centerTitle: true,
-        automaticallyImplyLeading: true,
         backgroundColor: Theme.of(context).colorScheme.primary,
         actions: [
           BlocListener<AuthCubit, AuthState>(
@@ -30,7 +31,6 @@ class HomePage extends StatelessWidget {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     duration: Duration(milliseconds: 1500),
-
                     content: Text(
                       authState.errorMessage ?? 'Failed to Sign Out',
                     ),
@@ -39,7 +39,6 @@ class HomePage extends StatelessWidget {
               }
             },
             child: IconButton(
-              color: Colors.white,
               onPressed: () {
                 context.read<AuthCubit>().logout();
               },
