@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthRemoteDatasource {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Stream<User?> get authStateChange => _auth.authStateChanges();
 
@@ -10,10 +12,17 @@ class AuthRemoteDatasource {
     String password,
   ) async {
     try {
-      return await _auth.signInWithEmailAndPassword(
+      final userCredential = await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
+
+      await _firestore.collection('Users').doc(userCredential.user!.uid).set({
+        'uid': userCredential.user!.uid,
+        'email': email,
+      });
+
+      return userCredential;
     } on FirebaseAuthException catch (e) {
       throw Exception(e.code);
     }
@@ -24,10 +33,17 @@ class AuthRemoteDatasource {
     String password,
   ) async {
     try {
-      return await _auth.createUserWithEmailAndPassword(
+      final userCredential = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+
+      await _firestore.collection('users').doc(userCredential.user!.uid).set({
+        'uid': userCredential.user!.uid,
+        'email': email,
+      });
+
+      return userCredential;
     } on FirebaseAuthException catch (e) {
       throw Exception(e.code);
     }

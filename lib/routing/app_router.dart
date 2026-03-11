@@ -3,6 +3,7 @@ import 'package:mini_chat/data/remote_datasource/auth/auth_remote_datasource.dar
 import 'package:mini_chat/presentations/cubits/auth/auth_cubit.dart';
 import 'package:mini_chat/presentations/pages/auth/login_page.dart';
 import 'package:mini_chat/presentations/pages/auth/register_page.dart';
+import 'package:mini_chat/presentations/pages/chat/chat_page.dart';
 import 'package:mini_chat/presentations/pages/home/home_page.dart';
 import 'package:mini_chat/presentations/pages/settings/settings_page.dart';
 import 'package:mini_chat/routing/go_router_refresh_stream.dart';
@@ -14,6 +15,7 @@ class AppRoutes {
   static const login = '/login';
   static const register = '/register';
   static const settings = '/settings';
+  static const chat = '/chat/:receiverEmail/:receiverID';
 
   static final router = GoRouter(
     refreshListenable: GoRouterRefreshStream(authCubit.stream),
@@ -36,6 +38,14 @@ class AppRoutes {
       GoRoute(path: login, builder: (context, state) => LoginPage()),
       GoRoute(path: register, builder: (context, state) => RegisterPage()),
       GoRoute(path: settings, builder: (context, state) => SettingsPage()),
+      GoRoute(
+        path: '/chat/:email',
+        builder: (context, state) {
+          final email = state.pathParameters['receiverEmail'] ?? 'No Email';
+          final id = state.pathParameters['receiverID'] ?? 'No Email';
+          return ChatPage(receiverEmail: email, receiverID: id);
+        },
+      ),
     ],
   );
 }

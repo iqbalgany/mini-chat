@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mini_chat/core/themes/light_mode.dart';
 import 'package:mini_chat/data/remote_datasource/auth/auth_remote_datasource.dart';
+import 'package:mini_chat/data/remote_datasource/chat/chat_remote_datasource.dart';
 import 'package:mini_chat/firebase_options.dart';
 import 'package:mini_chat/presentations/cubits/auth/auth_cubit.dart';
+import 'package:mini_chat/presentations/cubits/chat/chat_cubit.dart';
 import 'package:mini_chat/routing/app_router.dart';
 
 void main() async {
@@ -21,6 +23,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => AuthCubit(AuthRemoteDatasource())),
+        BlocProvider(create: (context) => ChatCubit(ChatRemoteDatasource())),
       ],
       child: MaterialApp.router(
         theme: lightMode,
