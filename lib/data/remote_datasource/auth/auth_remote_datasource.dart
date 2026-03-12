@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -17,7 +19,7 @@ class AuthRemoteDatasource {
         password: password,
       );
 
-      await _firestore.collection('Users').doc(userCredential.user!.uid).set({
+      await _firestore.collection('users').doc(userCredential.user!.uid).set({
         'uid': userCredential.user!.uid,
         'email': email,
       });
@@ -47,6 +49,16 @@ class AuthRemoteDatasource {
     } on FirebaseAuthException catch (e) {
       throw Exception(e.code);
     }
+  }
+
+  // get user stream
+  Stream<List<Map<String, dynamic>>> getUserStream() {
+    final currentEmail = _auth.currentUser?.email ?? 'Kosong';
+    log('Email yang sedang login : $currentEmail');
+
+    return _firestore.collection('users').snapshots().map((snapshot) {
+      return snapshot.docs.map((doc) => doc.data()).toList();
+    });
   }
 
   Future<void> signOut() async {

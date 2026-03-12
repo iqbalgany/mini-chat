@@ -39,7 +39,7 @@ class AppRoutes {
       GoRoute(path: register, builder: (context, state) => RegisterPage()),
       GoRoute(path: settings, builder: (context, state) => SettingsPage()),
       GoRoute(
-        path: '/chat/:email',
+        path: chat,
         builder: (context, state) {
           final email = state.pathParameters['receiverEmail'] ?? 'No Email';
           final id = state.pathParameters['receiverID'] ?? 'No Email';

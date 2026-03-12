@@ -1,7 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mini_chat/presentations/cubits/chat/chat_cubit.dart';
+import 'package:mini_chat/presentations/cubits/auth/auth_cubit.dart';
 import 'package:mini_chat/presentations/widgets/my_drawer.dart';
 import 'package:mini_chat/presentations/widgets/user_tile.dart';
 
@@ -10,45 +11,47 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final User? currentUser = FirebaseAuth.instance.currentUser;
     return Scaffold(
       drawer: MyDrawer(),
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.white),
-        title: Text('Home', style: TextStyle(color: Colors.white)),
+        title: Text(
+          'Home',
+          style: TextStyle(color: Theme.of(context).colorScheme.primary),
+        ),
         centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.primary,
       ),
-      body: BlocBuilder<ChatCubit, ChatState>(
-        builder: (context, chatState) {
-          if (chatState.status == ChatStatus.failure) {
-            return Center(child: Text(chatState.errorMessage));
+      body: BlocBuilder<AuthCubit, AuthState>(
+        builder: (context, authState) {
+          if (authState.status == AuthStatus.failure) {
+            return Center(child: Text(authState.errorMessage ?? 'Error'));
           }
 
-          if (chatState.status == ChatStatus.loading) {
+          if (authState.status == AuthStatus.loading) {
             return Center(child: CircularProgressIndicator());
           }
 
-          return RefreshIndicator(
-            onRefresh: () async {
-              context.read<ChatCubit>().loadUsers();
+          return ListView.builder(
+            padding: EdgeInsets.all(10),
+            itemCount: authState.users?.length ?? 0,
+            itemBuilder: (context, index) {
+              final email = authState.users![index]['email'];
+              final id = authState.users![index]['uid'];
+
+              if (email == currentUser?.email) {
+                return SizedBox.shrink();
+              }
+
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5),
+                child: UserTile(
+                  text: email,
+                  onTap: () {
+                    context.push('/chat/$email/$id');
+                  },
+                ),
+              );
             },
-            child: ListView.builder(
-              padding: EdgeInsets.all(10),
-              itemCount: chatState.users?.length ?? 0,
-              itemBuilder: (context, index) {
-                final email = chatState.users![index]['email'];
-                final id = chatState.users![index]['uid'];
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: UserTile(
-                    text: email,
-                    onTap: () {
-                      context.push('/chat/$email/$id');
-                    },
-                  ),
-                );
-              },
-            ),
           );
         },
       ),

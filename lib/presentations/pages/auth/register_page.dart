@@ -9,11 +9,11 @@ import 'package:mini_chat/routing/app_router.dart';
 
 class RegisterPage extends StatelessWidget {
   final emailController = TextEditingController();
+  final firstNameController = TextEditingController();
+  final lastNameController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmationPasswordController = TextEditingController();
   RegisterPage({super.key});
-
-  void register() {}
 
   @override
   Widget build(BuildContext context) {
@@ -44,12 +44,23 @@ class RegisterPage extends StatelessWidget {
             SizedBox(height: 25),
 
             // email textfield
-            MyTextfield(hintText: 'Email', controller: emailController),
+            MyTextField(hintText: 'Email', controller: emailController),
+            SizedBox(height: 10),
+
+            // first name
+            MyTextField(
+              hintText: 'First Name',
+              controller: firstNameController,
+            ),
+            SizedBox(height: 10),
+
+            // last name
+            MyTextField(hintText: 'Last Name', controller: lastNameController),
 
             SizedBox(height: 10),
 
             // password textfield
-            MyTextfield(
+            MyTextField(
               hintText: 'Password',
               controller: passwordController,
               obscureText: true,
@@ -57,7 +68,7 @@ class RegisterPage extends StatelessWidget {
             SizedBox(height: 10),
 
             // confirmation password textfield
-            MyTextfield(
+            MyTextField(
               hintText: 'Confirmation Password',
               controller: confirmationPasswordController,
               obscureText: true,

@@ -23,6 +23,7 @@ class AuthCubit extends Cubit<AuthState> {
         emit(state.copyWith(status: AuthStatus.unauthenticated, user: null));
       }
     });
+    loadUsers();
   }
 
   Future<void> login(String email, String password) async {
@@ -54,17 +55,28 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> logout() async {
+    await _auth.signOut();
+  }
+
+  Future<void> loadUsers() async {
     emit(state.copyWith(status: AuthStatus.loading));
-    try {
-      await _auth.signOut();
-    } catch (e) {
-      emit(
-        state.copyWith(
-          errorMessage: 'Failed to logout',
-          status: AuthStatus.failure,
-        ),
-      );
-    }
+    log('Loading load user');
+
+    _auth.getUserStream().listen(
+      (users) {
+        emit(state.copyWith(status: AuthStatus.authenticated, users: users));
+        log('Success load user');
+      },
+      onError: (error) {
+        emit(
+          state.copyWith(
+            status: AuthStatus.failure,
+            errorMessage: error.toString(),
+          ),
+        );
+        log('Error load user: $error');
+      },
+    );
   }
 
   @override

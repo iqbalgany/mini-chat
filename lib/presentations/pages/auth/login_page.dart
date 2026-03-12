@@ -43,12 +43,12 @@ class LoginPage extends StatelessWidget {
             SizedBox(height: 25),
 
             // email textfield
-            MyTextfield(hintText: 'Email', controller: emailController),
+            MyTextField(hintText: 'Email', controller: emailController),
 
             SizedBox(height: 10),
 
             // password textfield
-            MyTextfield(
+            MyTextField(
               hintText: 'Password',
               controller: passwordController,
               obscureText: true,

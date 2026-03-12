@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mini_chat/data/models/message_model.dart';
@@ -9,18 +7,8 @@ class ChatRemoteDatasource {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // get user stream
-  Stream<List<Map<String, dynamic>>> getUserStream() {
-    final currentEmail = _auth.currentUser?.email ?? 'Kosong';
-    log('Email yang sedang login : $currentEmail');
-
-    return _firestore.collection('users').snapshots().map((snapshot) {
-      return snapshot.docs.map((doc) => doc.data()).toList();
-    });
-  }
-
   // send message
-  Future<void> sendMessage(String receiverID, message) async {
+  Future<MessageModel> sendMessage(String receiverID, message) async {
     // get current user info
     final currentUserID = _auth.currentUser!.uid;
     final currentUserEmail = _auth.currentUser!.email;
@@ -28,8 +16,8 @@ class ChatRemoteDatasource {
 
     // create new message
     MessageModel newMessage = MessageModel(
-      senderID: currentUserEmail!,
-      senderEmail: currentUserID,
+      senderID: currentUserID,
+      senderEmail: currentUserEmail!,
       receiverID: receiverID,
       message: message,
       timestamp: timestamp,
@@ -46,6 +34,8 @@ class ChatRemoteDatasource {
         .doc(chatRoomID)
         .collection('messages')
         .add(newMessage.toMap());
+
+    return newMessage;
   }
 
   // get message

@@ -53,17 +53,6 @@ class MyDrawer extends StatelessWidget {
               if (authState.status == AuthStatus.unauthenticated) {
                 context.go(AppRoutes.login);
               }
-
-              if (authState.status == AuthStatus.failure) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    duration: Duration(milliseconds: 1500),
-                    content: Text(
-                      authState.errorMessage ?? 'Failed to Sign Out',
-                    ),
-                  ),
-                );
-              }
             },
             child: ListTile(
               contentPadding: EdgeInsets.only(left: 25),

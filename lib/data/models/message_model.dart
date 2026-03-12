@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MessageModel {
@@ -40,5 +42,45 @@ class MessageModel {
       'message': message,
       'timestamp': timestamp,
     };
+  }
+
+  factory MessageModel.fromMap(Map<String, dynamic> map) {
+    return MessageModel(
+      senderID: map['senderID'] as String,
+      senderEmail: map['senderEmail'] as String,
+      receiverID: map['receiverID'] as String,
+      message: map['message'] as String,
+      timestamp: map['timestamp'] as Timestamp,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory MessageModel.fromJson(String source) =>
+      MessageModel.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  @override
+  String toString() {
+    return 'MessageModel(senderID: $senderID, senderEmail: $senderEmail, receiverID: $receiverID, message: $message, timestamp: $timestamp)';
+  }
+
+  @override
+  bool operator ==(covariant MessageModel other) {
+    if (identical(this, other)) return true;
+
+    return other.senderID == senderID &&
+        other.senderEmail == senderEmail &&
+        other.receiverID == receiverID &&
+        other.message == message &&
+        other.timestamp == timestamp;
+  }
+
+  @override
+  int get hashCode {
+    return senderID.hashCode ^
+        senderEmail.hashCode ^
+        receiverID.hashCode ^
+        message.hashCode ^
+        timestamp.hashCode;
   }
 }

@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 
 ThemeData lightMode = ThemeData(
+  appBarTheme: AppBarThemeData(
+    backgroundColor: Colors.transparent,
+    foregroundColor: Colors.grey,
+    iconTheme: IconThemeData(color: Colors.grey.shade500),
+  ),
+
+  scaffoldBackgroundColor: Colors.white,
   colorScheme: ColorScheme.light(
     surface: Colors.grey.shade300,
     primary: Colors.grey.shade500,

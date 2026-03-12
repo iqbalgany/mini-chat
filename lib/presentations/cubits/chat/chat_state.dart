@@ -4,25 +4,25 @@ part of 'chat_cubit.dart';
 enum ChatStatus { initial, loading, success, failure }
 
 class ChatState extends Equatable {
-  final List<Map<String, dynamic>>? users;
+  final List<MessageModel>? message;
   final ChatStatus status;
   final String errorMessage;
   const ChatState({
-    this.users = const [],
     this.status = ChatStatus.initial,
     this.errorMessage = '',
+    this.message,
   });
 
   @override
-  List<Object?> get props => [users, status, errorMessage];
+  List<Object?> get props => [message, status, errorMessage];
 
   ChatState copyWith({
-    List<Map<String, dynamic>>? users,
+    List<MessageModel>? message,
     ChatStatus? status,
     String? errorMessage,
   }) {
     return ChatState(
-      users: users ?? this.users,
+      message: message ?? this.message,
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
     );
