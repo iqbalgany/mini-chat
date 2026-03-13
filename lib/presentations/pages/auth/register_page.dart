@@ -47,14 +47,14 @@ class RegisterPage extends StatelessWidget {
             MyTextField(hintText: 'Email', controller: emailController),
             SizedBox(height: 10),
 
-            // first name
+            // first name textfield
             MyTextField(
               hintText: 'First Name',
               controller: firstNameController,
             ),
             SizedBox(height: 10),
 
-            // last name
+            // last name textfield
             MyTextField(hintText: 'Last Name', controller: lastNameController),
 
             SizedBox(height: 10),

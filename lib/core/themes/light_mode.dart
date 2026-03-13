@@ -4,7 +4,7 @@ ThemeData lightMode = ThemeData(
   appBarTheme: AppBarThemeData(
     backgroundColor: Colors.transparent,
     foregroundColor: Colors.grey,
-    iconTheme: IconThemeData(color: Colors.grey.shade500),
+    iconTheme: IconThemeData(color: Colors.grey.shade900),
   ),
 
   scaffoldBackgroundColor: Colors.white,

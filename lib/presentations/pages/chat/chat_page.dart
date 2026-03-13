@@ -35,7 +35,7 @@ class _ChatPageState extends State<ChatPage> {
       appBar: AppBar(
         title: Text(
           widget.receiverEmail,
-          style: TextStyle(color: Theme.of(context).colorScheme.primary),
+          style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary),
         ),
       ),
       body: Column(
