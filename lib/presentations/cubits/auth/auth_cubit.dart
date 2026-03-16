@@ -40,11 +40,11 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  Future<void> signup(String email, String password) async {
+  Future<void> signup(String email, password, firstName, lastName) async {
     emit(state.copyWith(status: AuthStatus.loading));
     log('Loading');
     try {
-      await _auth.signUpWithEmailPassword(email, password);
+      await _auth.signUpWithEmailPassword(email, password, firstName, lastName);
       log('Success');
     } catch (e) {
       log("DEBUG ERROR: $e");
@@ -65,7 +65,7 @@ class AuthCubit extends Cubit<AuthState> {
     _auth.getUserStream().listen(
       (users) {
         emit(state.copyWith(status: AuthStatus.authenticated, users: users));
-        log('Success load user');
+        log('Users found: ${users.length}');
       },
       onError: (error) {
         emit(

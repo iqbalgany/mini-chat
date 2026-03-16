@@ -19,11 +19,6 @@ class AuthRemoteDatasource {
         password: password,
       );
 
-      await _firestore.collection('users').doc(userCredential.user!.uid).set({
-        'uid': userCredential.user!.uid,
-        'email': email,
-      });
-
       return userCredential;
     } on FirebaseAuthException catch (e) {
       throw Exception(e.code);
@@ -33,6 +28,8 @@ class AuthRemoteDatasource {
   Future<UserCredential> signUpWithEmailPassword(
     String email,
     String password,
+    String firstName,
+    String lastName,
   ) async {
     try {
       final userCredential = await _auth.createUserWithEmailAndPassword(
@@ -43,6 +40,8 @@ class AuthRemoteDatasource {
       await _firestore.collection('users').doc(userCredential.user!.uid).set({
         'uid': userCredential.user!.uid,
         'email': email,
+        'firstName': firstName,
+        'lastName': lastName,
       });
 
       return userCredential;

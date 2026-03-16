@@ -5,6 +5,11 @@ ThemeData lightMode = ThemeData(
     backgroundColor: Colors.transparent,
     foregroundColor: Colors.grey,
     iconTheme: IconThemeData(color: Colors.grey.shade900),
+    titleTextStyle: TextStyle(
+      color: Colors.grey.shade900,
+      fontSize: 24,
+      fontWeight: FontWeight.bold,
+    ),
   ),
 
   scaffoldBackgroundColor: Colors.white,

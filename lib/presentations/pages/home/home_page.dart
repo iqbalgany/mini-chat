@@ -35,8 +35,12 @@ class HomePage extends StatelessWidget {
             padding: EdgeInsets.all(10),
             itemCount: authState.users?.length ?? 0,
             itemBuilder: (context, index) {
-              final email = authState.users![index]['email'];
-              final id = authState.users![index]['uid'];
+              final userMap = authState.users![index];
+              final email = userMap['email'];
+              final id = userMap['uid'];
+              final firstName = userMap['firstName'];
+              final lastName = userMap['lastName'];
+              final fullName = '$firstName $lastName'.trim();
 
               if (email == currentUser?.email) {
                 return SizedBox.shrink();
@@ -45,9 +49,11 @@ class HomePage extends StatelessWidget {
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5),
                 child: UserTile(
-                  text: email,
+                  text: fullName.isNotEmpty ? fullName : email,
                   onTap: () {
-                    context.push('/chat/$email/$id');
+                    context.push(
+                      '/chat/$email/$id?firstName=$firstName&lastName=$lastName',
+                    );
                   },
                 ),
               );

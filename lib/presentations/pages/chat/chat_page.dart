@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,10 +9,14 @@ import 'package:mini_chat/presentations/widgets/my_textfield.dart';
 class ChatPage extends StatefulWidget {
   final String receiverEmail;
   final String receiverID;
+  final String firstName;
+  final String lastName;
   const ChatPage({
     super.key,
     required this.receiverEmail,
     required this.receiverID,
+    required this.firstName,
+    required this.lastName,
   });
 
   @override
@@ -30,11 +35,13 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     final myUID = FirebaseAuth.instance.currentUser?.uid ?? '';
-
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.secondary,
         title: Text(
-          widget.receiverEmail,
+          widget.firstName.isNotEmpty
+              ? '${widget.firstName} ${widget.lastName}'
+              : widget.receiverEmail,
           style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary),
         ),
       ),
@@ -53,15 +60,35 @@ class _ChatPageState extends State<ChatPage> {
                 }
 
                 return ListView.builder(
+                  padding: EdgeInsets.symmetric(vertical: 20),
                   itemCount: chatState.message?.length ?? 0,
                   itemBuilder: (context, index) {
                     final user = chatState.message![index];
+                    final isCurrentUser = user.senderID == myUID;
 
-                    final curentUser = user.senderID == myUID;
-
-                    return MyChatBubble(
-                      message: user.message,
-                      currentUser: curentUser,
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Row(
+                        mainAxisAlignment: isCurrentUser
+                            ? MainAxisAlignment.end
+                            : MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (!isCurrentUser) ...[
+                            CircleAvatar(
+                              radius: 25,
+                              child: Icon(Icons.person, size: 30),
+                            ),
+                          ],
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: MyChatBubble(
+                              message: user.message,
+                              currentUser: isCurrentUser,
+                            ),
+                          ),
+                        ],
+                      ),
                     );
                   },
                 );
@@ -70,7 +97,7 @@ class _ChatPageState extends State<ChatPage> {
           ),
 
           // user input
-          MyTextField(
+          MyTextFormField(
             hintText: 'Type a message',
             controller: _messageController,
             obscureText: false,
@@ -88,7 +115,6 @@ class _ChatPageState extends State<ChatPage> {
                     widget.receiverID,
                     _messageController.text.trim(),
                   );
-
                   _messageController.clear();
                 }
               },

@@ -43,7 +43,14 @@ class AppRoutes {
         builder: (context, state) {
           final email = state.pathParameters['receiverEmail'] ?? 'No Email';
           final id = state.pathParameters['receiverID'] ?? 'No Email';
-          return ChatPage(receiverEmail: email, receiverID: id);
+          final firstName = state.uri.queryParameters['firstName'] ?? '';
+          final lastName = state.uri.queryParameters['lastName'] ?? '';
+          return ChatPage(
+            receiverEmail: email,
+            receiverID: id,
+            firstName: firstName,
+            lastName: lastName,
+          );
         },
       ),
     ],

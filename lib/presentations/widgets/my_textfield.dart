@@ -1,24 +1,27 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
-class MyTextField extends StatelessWidget {
+class MyTextFormField extends StatelessWidget {
   final bool obscureText;
   final String hintText;
   final TextEditingController controller;
   final Widget? suffixIcon;
-  const MyTextField({
+  final String? Function(String?)? validator;
+  const MyTextFormField({
     super.key,
     this.obscureText = false,
     required this.hintText,
     required this.controller,
     this.suffixIcon,
+    this.validator,
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(15, 0, 15, 15),
-      child: TextField(
+      child: TextFormField(
+        validator: validator,
         obscureText: obscureText,
         controller: controller,
         decoration: InputDecoration(
