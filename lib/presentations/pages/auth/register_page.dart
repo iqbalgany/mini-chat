@@ -51,6 +51,7 @@ class RegisterPage extends StatelessWidget {
 
                 // email textfield
                 MyTextFormField(
+                  isPassword: false,
                   hintText: 'Email',
                   controller: emailController,
                   validator: (value) {
@@ -64,6 +65,7 @@ class RegisterPage extends StatelessWidget {
 
                 // first name textfield
                 MyTextFormField(
+                  isPassword: false,
                   hintText: 'First Name',
                   controller: firstNameController,
                   validator: (value) {
@@ -77,6 +79,8 @@ class RegisterPage extends StatelessWidget {
 
                 // last name textfield
                 MyTextFormField(
+                  isPassword: false,
+
                   hintText: 'Last Name',
                   controller: lastNameController,
                   validator: (value) {
@@ -91,6 +95,7 @@ class RegisterPage extends StatelessWidget {
 
                 // password textfield
                 MyTextFormField(
+                  isPassword: true,
                   hintText: 'Password',
                   controller: passwordController,
                   obscureText: true,
@@ -105,6 +110,7 @@ class RegisterPage extends StatelessWidget {
 
                 // confirmation password textfield
                 MyTextFormField(
+                  isPassword: true,
                   hintText: 'Confirmation Password',
                   controller: confirmationPasswordController,
                   obscureText: true,

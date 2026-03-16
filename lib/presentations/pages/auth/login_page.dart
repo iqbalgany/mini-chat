@@ -47,6 +47,7 @@ class LoginPage extends StatelessWidget {
                 // email textfield
                 MyTextFormField(
                   hintText: 'Email',
+                  isPassword: false,
                   controller: emailController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -60,6 +61,7 @@ class LoginPage extends StatelessWidget {
 
                 // password textfield
                 MyTextFormField(
+                  isPassword: true,
                   hintText: 'Password',
                   controller: passwordController,
                   obscureText: true,

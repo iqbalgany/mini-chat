@@ -98,6 +98,7 @@ class _ChatPageState extends State<ChatPage> {
 
           // user input
           MyTextFormField(
+            isPassword: false,
             hintText: 'Type a message',
             controller: _messageController,
             obscureText: false,
@@ -121,6 +122,7 @@ class _ChatPageState extends State<ChatPage> {
               icon: Icon(Icons.send),
             ),
           ),
+          SizedBox(height: 20),
         ],
       ),
     );
